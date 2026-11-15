@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>School Assistant — IMSB Dhoke Mai Nawab</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #f2f5f2; color: #1c2b1e; display: flex; flex-direction: column; height: 100dvh; }
+  header { background: #14532d; color: #fff; padding: 14px 16px; }
+  header h1 { font-size: 18px; }
+  header p { font-size: 13px; opacity: .85; margin-top: 2px; }
+  header a { color: #bbf7d0; font-size: 13px; }
+  #chat { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; }
+  .bubble { max-width: 88%; padding: 10px 13px; border-radius: 14px; font-size: 15px; line-height: 1.55; white-space: pre-wrap; word-wrap: break-word; }
+  .me { align-self: flex-end; background: #14532d; color: #fff; border-bottom-right-radius: 4px; }
+  .bot { align-self: flex-start; background: #fff; border: 1px solid #dfe7df; border-bottom-left-radius: 4px; }
+  #chips { display: flex; gap: 8px; padding: 0 12px 10px; flex-wrap: wrap; }
+  .chip { border: 1px solid #14532d; color: #14532d; background: #fff; border-radius: 999px; padding: 8px 13px; font-size: 14px; cursor: pointer; }
+  form { display: flex; gap: 8px; padding: 10px 12px; background: #fff; border-top: 1px solid #dfe7df; }
+  input { flex: 1; font-size: 16px; padding: 11px 13px; border: 1px solid #b9c8ba; border-radius: 10px; outline: none; }
+  button.send { background: #14532d; color: #fff; border: none; border-radius: 10px; padding: 11px 18px; font-size: 16px; cursor: pointer; }
+  button.send:disabled { opacity: .5; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎓 School Assistant</h1>
+  <p>Islamabad Model School for Boys (I-V) Dhoke Mai Nawab — ہوم ورک، امتحان یا نوٹس کے بارے میں سوال پوچھیں</p>
+  <a href="index.html">← Back to school website</a>
+</header>
+
+<div id="chat"></div>
+
+<div id="chips">
+  <button class="chip" type="button">Class 3 ka homework kya hai?</button>
+  <button class="chip" type="button">When is the next exam?</button>
+  <button class="chip" type="button">Any new school notices?</button>
+</div>
+
+<form id="askForm">
+  <input id="q" type="text" placeholder="اپنا سوال یہاں لکھیں…" autocomplete="off">
+  <button class="send" id="sendBtn" type="submit">Send</button>
+</form>
+
+<script>
+  const chat = document.getElementById('chat');
+  const form = document.getElementById('askForm');
+  const input = document.getElementById('q');
+  const btn = document.getElementById('sendBtn');
+
+  function add(text, cls) {
+    const d = document.createElement('div');
+    d.className = 'bubble ' + cls;
+    d.textContent = text;
+    chat.appendChild(d);
+    chat.scrollTop = chat.scrollHeight;
+    return d;
+  }
+
+  async function ask(question) {
+    add(question, 'me');
+    const waiting = add('…', 'bot');
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+      const data = await r.json();
+      waiting.textContent = data.answer || data.error || 'Sorry, something went wrong.';
+    } catch (e) {
+      waiting.textContent = 'Connection problem. Please try again.';
+    }
+    btn.disabled = false;
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = '';
+    ask(q);
+  });
+
+  document.querySelectorAll('.chip').forEach(c =>
+    c.addEventListener('click', () => ask(c.textContent.trim()))
+  );
+
+  add('Assalam-o-Alaikum! میں اسکول اسسٹنٹ ہوں۔ ہوم ورک، امتحان یا نوٹس کے بارے میں سوال پوچھیں — یا نیچے دیے گئے بٹن دبائیں۔', 'bot');
+</script>
+</body>
+</html>

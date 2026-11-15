@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12345a"><title>Admin Dashboard | IMSB Dhoke Mai Nawab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+  <header class="admin-header"><div class="container header-inner"><a class="brand" href="index.html"><span class="crest"><span>IM</span></span><span class="brand-copy"><strong>School Admin</strong><small>ISLAMABAD MODEL SCHOOL FOR BOYS (I-V)</small></span></a><a class="text-link" href="index.html">← View public website</a></div></header>
+  <main class="admin-main container">
+    <div class="admin-title"><div><div class="section-kicker">CONTENT MANAGEMENT</div><h1>Admin <em>dashboard.</em></h1><p>Manage the information displayed on the public school website.</p></div><span class="demo-pill">LIVE BACKEND</span></div>
+    <div class="admin-card" id="loginCard">
+      <h2>Admin login</h2>
+      <p class="body-copy" id="loginStatus">Checking login status…</p>
+      <form id="loginForm" class="admin-form">
+        <label>Password<input name="password" type="password" required placeholder="Admin password" autocomplete="current-password"></label>
+        <button class="btn btn-primary" type="submit">Login →</button>
+      </form>
+      <button id="logoutBtn" class="btn btn-outline-danger" type="button" style="display:none">Logout</button>
+    </div>
+    <div class="warning-box"><strong>Note:</strong> Changes are now saved in the server database and are visible to every visitor on every device. Login is required to publish or delete content. Do not publish sensitive student information.</div>
+    <div class="admin-tabs" role="tablist"><button class="admin-tab active" data-tab="homeworkTab">Homework</button><button class="admin-tab" data-tab="examsTab">Exam schedule</button><button class="admin-tab" data-tab="noticesTab">Notices</button><button class="admin-tab" data-tab="photosTab">Photos</button></div>
+
+    <section class="admin-panel active" id="homeworkTab">
+      <div class="admin-card"><h2>Publish homework</h2><form id="homeworkForm" class="admin-form"><label>Class<select name="className" required><option value="">Choose class</option><option>Prep</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select></label><label>Subject<input name="subject" required placeholder="e.g. English"></label><label>Due date<input name="dueDate" type="date"></label><label class="full-field">Homework details<textarea name="details" rows="4" required placeholder="Enter the homework instructions"></textarea></label><button class="btn btn-primary" type="submit">Publish homework →</button></form></div>
+      <div class="admin-card"><h2>Published homework</h2><div id="adminHomeworkList" class="manage-list"></div></div>
+    </section>
+
+    <section class="admin-panel" id="examsTab">
+      <div class="admin-card"><h2>Add examination</h2><form id="examForm" class="admin-form"><label>Exam / term<input name="examName" required placeholder="e.g. First Term Examination"></label><label>Class<select name="className" required><option value="">Choose class</option><option>All classes</option><option>Prep</option><option>Class 1</option><option>Class 2</option><option>Class 3</option><option>Class 4</option><option>Class 5</option></select></label><label>Subject<input name="subject" required placeholder="Subject"></label><label>Exam date<input name="examDate" type="date" required></label><label class="full-field">Additional details<textarea name="details" rows="3" placeholder="Optional information"></textarea></label><button class="btn btn-primary" type="submit">Add to schedule →</button></form></div>
+      <div class="admin-card"><h2>Published examinations</h2><div id="adminExamList" class="manage-list"></div></div>
+    </section>
+
+    <section class="admin-panel" id="noticesTab">
+      <div class="admin-card"><h2>Publish a school notice</h2><form id="noticeForm" class="admin-form"><label class="full-field">Notice title<input name="title" required placeholder="Notice heading"></label><label class="full-field">Notice details<textarea name="details" rows="4" required placeholder="Write the announcement"></textarea></label><label>Notice date<input name="date" type="date"></label><button class="btn btn-primary" type="submit">Publish notice →</button></form></div>
+      <div class="admin-card"><h2>Published notices</h2><div id="adminNoticeList" class="manage-list"></div></div>
+    </section>
+
+    <section class="admin-panel" id="photosTab">
+      <div class="admin-card"><h2>School photographs</h2><p class="body-copy">Choose an image for a website section. Images are saved on the server and shown to all visitors.</p><form id="photoForm" class="admin-form"><label>Website section<select name="slot"><option value="heroImage">Homepage hero</option><option value="principalImage">Principal</option><option value="staffImage">Staff</option><option value="studentsImage">Students</option><option value="buildingImage">School building</option></select></label><label>Select image<input type="file" name="photo" accept="image/*" required></label><p class="full-field helper-text">Use images under 1.5 MB. Upload only photos approved for public display.</p><button class="btn btn-primary" type="submit">Save photograph →</button></form><div id="photoStatus" class="status-message" aria-live="polite"></div></div>
+    </section>
+    <div class="admin-bottom"><button id="resetDemo" class="btn btn-outline-danger">Delete all published content</button><span>Changes appear on the public website for all visitors.</span></div>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>

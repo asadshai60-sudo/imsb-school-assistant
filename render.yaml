@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: imsb-school-website
+    env: python
+    buildCommand: ""
+    startCommand: python server.py
+    envVars:
+      - key: ADMIN_PASSWORD
+        sync: false
